@@ -23,7 +23,14 @@ class Program
                 content = content.Substring(0, match.Index) + current + content.Substring(match.Index + match.Length);
             }
 
-            File.WriteAllText(file.FullName, content);
+            try
+            {
+                File.WriteAllText(file.FullName, content);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
         }
     }
 }
