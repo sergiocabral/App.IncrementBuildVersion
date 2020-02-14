@@ -8,11 +8,13 @@ class Program
     {
         foreach (var file in new DirectoryInfo(Environment.CurrentDirectory).GetFiles())
         {
-            if (!string.Equals(file.Extension, ".csproj", StringComparison.InvariantCultureIgnoreCase)) continue;
+            if (!string.Equals(file.Extension, ".csproj", StringComparison.InvariantCultureIgnoreCase) &&
+                !string.Equals(file.Name, "AssemblyInfo.cs", StringComparison.InvariantCultureIgnoreCase)) 
+                continue;
             
             var content = File.ReadAllText(file.FullName);
 
-            var matches = Regex.Matches(content, @"(?<=<\w+>\d+\.\d+\.\d+\.)\d+(?=</\w+>)",
+            var matches = Regex.Matches(content, @"((?<=<\w+>\d+\.\d+\.\d+\.)\d+(?=</\w+>)|(?<=Version\([@$]*""\d+\.\d+\.\d+\.)\d+(?=""\)))",
                 RegexOptions.Singleline | RegexOptions.IgnoreCase);
 
             for (var i = matches.Count - 1; i >= 0; i--)
